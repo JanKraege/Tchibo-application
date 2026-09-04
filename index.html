@@ -1,1 +1,1598 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <title>Jan Kraege | Supply Chain Decision Lab</title>
+
+  <style>
+    :root {
+      --navy: #0d2340;
+      --navy-2: #17395f;
+      --blue: #2f6da6;
+      --light-blue: #edf4f9;
+      --cream: #f7f4ee;
+      --white: #ffffff;
+      --text: #172331;
+      --muted: #657180;
+      --border: #dbe3ea;
+      --green: #2d7a5c;
+      --yellow: #d8a928;
+      --red: #b94c4c;
+      --shadow: 0 12px 35px rgba(13, 35, 64, 0.09);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: #f7f9fb;
+      line-height: 1.5;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: min(1180px, 92%);
+      margin: 0 auto;
+    }
+
+    /* NAV */
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(13, 35, 64, 0.97);
+      backdrop-filter: blur(12px);
+      color: white;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .nav-inner {
+      height: 68px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .brand {
+      font-weight: 700;
+      letter-spacing: .02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      font-size: 14px;
+    }
+
+    .nav-links a {
+      opacity: .85;
+    }
+
+    .nav-links a:hover {
+      opacity: 1;
+    }
+
+    /* HERO */
+
+    .hero {
+      min-height: 82vh;
+      display: flex;
+      align-items: center;
+      background:
+        radial-gradient(circle at 80% 20%, rgba(47,109,166,.20), transparent 30%),
+        linear-gradient(135deg, #0d2340 0%, #17395f 65%, #204a76 100%);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -140px;
+      bottom: -180px;
+      width: 520px;
+      height: 520px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 60px rgba(255,255,255,.025),
+        0 0 0 120px rgba(255,255,255,.02);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 820px;
+      padding: 90px 0;
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      font-size: 12px;
+      font-weight: 700;
+      color: #bed5e8;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: clamp(42px, 7vw, 78px);
+      line-height: 1.03;
+      margin: 0 0 24px;
+      letter-spacing: -0.04em;
+    }
+
+    .hero p {
+      max-width: 720px;
+      font-size: 20px;
+      color: #dce9f4;
+      margin-bottom: 34px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      padding: 14px 22px;
+      border-radius: 8px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: .2s ease;
+      font-size: 14px;
+    }
+
+    .btn-primary {
+      background: white;
+      color: var(--navy);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      border: 1px solid rgba(255,255,255,.35);
+      color: white;
+      background: rgba(255,255,255,.07);
+    }
+
+    /* GENERAL */
+
+    section {
+      padding: 90px 0;
+    }
+
+    .section-label {
+      color: var(--blue);
+      text-transform: uppercase;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: .13em;
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-size: clamp(32px, 4vw, 48px);
+      margin: 0 0 18px;
+      color: var(--navy);
+      letter-spacing: -0.025em;
+    }
+
+    .section-intro {
+      color: var(--muted);
+      font-size: 18px;
+      max-width: 760px;
+      margin-bottom: 45px;
+    }
+
+    /* ABOUT */
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 32px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      color: var(--navy);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .pill {
+      padding: 8px 12px;
+      background: var(--light-blue);
+      border-radius: 999px;
+      font-size: 13px;
+      color: var(--navy);
+      font-weight: 600;
+    }
+
+    .logic {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 25px;
+    }
+
+    .logic-step {
+      padding: 18px;
+      background: #f5f8fb;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      text-align: center;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    /* LAB */
+
+    #lab {
+      background: #eef3f7;
+    }
+
+    .lab-wrapper {
+      background: white;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 22px 50px rgba(13,35,64,.12);
+      border: 1px solid var(--border);
+    }
+
+    .lab-top {
+      background: var(--navy);
+      color: white;
+      padding: 30px;
+      display: flex;
+      justify-content: space-between;
+      gap: 25px;
+      align-items: center;
+    }
+
+    .lab-top h3 {
+      margin: 0 0 6px;
+      font-size: 25px;
+    }
+
+    .lab-top p {
+      margin: 0;
+      color: #cbd9e6;
+      font-size: 14px;
+    }
+
+    .status-badge {
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(255,255,255,.09);
+      padding: 9px 13px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .lab-main {
+      display: grid;
+      grid-template-columns: 390px 1fr;
+    }
+
+    /* CONTROL PANEL */
+
+    .controls {
+      padding: 30px;
+      border-right: 1px solid var(--border);
+      background: #fbfcfd;
+    }
+
+    .controls h4 {
+      margin: 0 0 24px;
+      color: var(--navy);
+      font-size: 18px;
+    }
+
+    .control {
+      margin-bottom: 24px;
+    }
+
+    .control-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .control-header strong {
+      color: var(--navy);
+    }
+
+    .value {
+      font-weight: 700;
+      color: var(--blue);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--navy);
+    }
+
+    .strategies {
+      margin-top: 30px;
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+    }
+
+    .strategy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .strategy {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: white;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .strategy:hover {
+      background: var(--light-blue);
+    }
+
+    .reset-btn {
+      width: 100%;
+      margin-top: 10px;
+      background: #edf1f4;
+      color: var(--navy);
+    }
+
+    /* RESULTS */
+
+    .results {
+      padding: 30px;
+    }
+
+    .scenario-title {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .scenario-title h4 {
+      margin: 0;
+      font-size: 18px;
+      color: var(--navy);
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .kpi {
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: #fff;
+    }
+
+    .kpi-name {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .kpi-number {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1.1;
+    }
+
+    .kpi-change {
+      font-size: 12px;
+      margin-top: 8px;
+      font-weight: 700;
+    }
+
+    .good {
+      color: var(--green);
+    }
+
+    .bad {
+      color: var(--red);
+    }
+
+    .neutral {
+      color: var(--yellow);
+    }
+
+    .bar-wrap {
+      height: 6px;
+      background: #edf1f4;
+      border-radius: 99px;
+      overflow: hidden;
+      margin-top: 14px;
+    }
+
+    .bar {
+      height: 100%;
+      background: var(--blue);
+      border-radius: 99px;
+      width: 50%;
+      transition: .25s ease;
+    }
+
+    .decision-box {
+      margin-top: 24px;
+      border-radius: 15px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .decision-head {
+      padding: 16px 20px;
+      background: #f2f6f9;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .decision-head span:first-child {
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .decision {
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: .05em;
+    }
+
+    .decision-content {
+      padding: 20px;
+    }
+
+    .decision-content p {
+      margin: 0 0 10px;
+      color: var(--muted);
+    }
+
+    .decision-reasons {
+      padding-left: 18px;
+      margin-bottom: 0;
+    }
+
+    .disclaimer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 11px;
+      padding: 12px 14px;
+      background: #f7f9fb;
+      border-radius: 8px;
+    }
+
+    /* THINKING SECTION */
+
+    .thinking-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .thinking-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+    }
+
+    .thinking-no {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--blue);
+      margin-bottom: 20px;
+    }
+
+    .thinking-card h3 {
+      color: var(--navy);
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .thinking-card p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 0;
+    }
+
+    /* CTA */
+
+    .cta {
+      background: var(--navy);
+      color: white;
+      text-align: center;
+    }
+
+    .cta h2 {
+      color: white;
+    }
+
+    .cta p {
+      color: #cfdeeb;
+      max-width: 700px;
+      margin: 0 auto 30px;
+      font-size: 18px;
+    }
+
+    footer {
+      background: #08182b;
+      color: #9fb1c4;
+      padding: 24px 0;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .about-grid,
+      .lab-main {
+        grid-template-columns: 1fr;
+      }
+
+      .controls {
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .kpi-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .thinking-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .logic {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+
+    @media (max-width: 580px) {
+      .kpi-grid,
+      .thinking-grid,
+      .logic,
+      .strategy-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .lab-top {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      h1 {
+        font-size: 45px;
+      }
+
+      .hero p {
+        font-size: 17px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<nav>
+  <div class="container nav-inner">
+    <div class="brand">JAN KRAEGE</div>
+
+    <div class="nav-links">
+      <a href="#about">Profil</a>
+      <a href="#lab">Decision Lab</a>
+      <a href="#thinking">Arbeitsweise</a>
+    </div>
+  </div>
+</nav>
+
+
+<header class="hero">
+  <div class="container hero-content">
+
+    <div class="eyebrow">
+      Application Project · Junior Manager Programm Logistik
+    </div>
+
+    <h1>
+      Supply Chain<br>
+      Decision Lab
+    </h1>
+
+    <p>
+      Wie lassen sich Kosten, Service-Level und Nachhaltigkeit
+      in einer internationalen Omnichannel-Logistik gemeinsam steuern?
+      Ein interaktiver Case, der meine analytische Arbeitsweise greifbar macht.
+    </p>
+
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#lab">
+        Case starten
+      </a>
+
+      <a class="btn btn-secondary" href="#about">
+        Über mich
+      </a>
+    </div>
+
+  </div>
+</header>
+
+
+<section id="about">
+  <div class="container">
+
+    <div class="section-label">Warum dieses Projekt?</div>
+
+    <h2>
+      Analyse soll zu Entscheidungen führen.
+    </h2>
+
+    <p class="section-intro">
+      Mich interessiert nicht nur, was eine Kennzahl zeigt,
+      sondern warum sie sich verändert und welche operative Entscheidung
+      daraus folgen sollte. Genau diese Logik bildet der folgende
+      Supply-Chain-Case ab.
+    </p>
+
+    <div class="about-grid">
+
+      <div class="card">
+        <h3>Mein Hintergrund</h3>
+
+        <p>
+          Master of Management mit akademischem Fokus auf
+          Strategic Supply Chain Management und Global Strategic Management.
+          Internationale Studien- und Praxiserfahrung in Deutschland
+          und Australien.
+        </p>
+
+        <div class="pill-row">
+          <span class="pill">Supply Chain Management</span>
+          <span class="pill">Analytics</span>
+          <span class="pill">Process Improvement</span>
+          <span class="pill">International</span>
+          <span class="pill">Structured Problem Solving</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Meine Entscheidungslogik</h3>
+
+        <p>
+          Gute Supply-Chain-Entscheidungen optimieren nicht isoliert
+          eine Kennzahl. Sie berücksichtigen Zielkonflikte zwischen
+          Wirtschaftlichkeit, Warenversorgung, Kapazität und Nachhaltigkeit.
+        </p>
+
+        <div class="logic">
+          <div class="logic-step">01<br>Verstehen</div>
+          <div class="logic-step">02<br>Analysieren</div>
+          <div class="logic-step">03<br>Testen</div>
+          <div class="logic-step">04<br>Entscheiden</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<section id="lab">
+  <div class="container">
+
+    <div class="section-label">Interactive Case</div>
+
+    <h2>
+      Omnichannel Logistics Decision Lab
+    </h2>
+
+    <p class="section-intro">
+      Verändere die operativen Stellhebel und beobachte,
+      wie sich Kosten, Service, Durchlaufzeit, Kapazität und Energieverbrauch verändern.
+    </p>
+
+    <div class="lab-wrapper">
+
+      <div class="lab-top">
+
+        <div>
+          <h3>Scenario: Growing Omnichannel Demand</h3>
+
+          <p>
+            Nachfrage steigt. Gleichzeitig sollen Kosten und Ressourcenverbrauch
+            kontrolliert werden, ohne das Service-Level zu gefährden.
+          </p>
+        </div>
+
+        <div class="status-badge">
+          ILLUSTRATIVE DATA
+        </div>
+
+      </div>
+
+
+      <div class="lab-main">
+
+        <!-- LEFT SIDE -->
+
+        <div class="controls">
+
+          <h4>Operative Stellhebel</h4>
+
+
+          <div class="control">
+            <div class="control-header">
+              <strong>Nachfrage</strong>
+              <span class="value" id="demandValue">100 %</span>
+            </div>
+
+            <input
+              id="demand"
+              type="range"
+              min="90"
+              max="130"
+              value="100"
+              step="1"
+            >
+          </div>
+
+
+          <div class="control">
+            <div class="control-header">
+              <strong>Kommissionierkapazität</strong>
+              <span class="value" id="capacityValue">100 %</span>
+            </div>
+
+            <input
+              id="capacity"
+              type="range"
+              min="90"
+              max="125"
+              value="100"
+              step="1"
+            >
+          </div>
+
+
+          <div class="control">
+            <div class="control-header">
+              <strong>Transportauslastung</strong>
+              <span class="value" id="transportValue">82 %</span>
+            </div>
+
+            <input
+              id="transport"
+              type="range"
+              min="65"
+              max="96"
+              value="82"
+              step="1"
+            >
+          </div>
+
+
+          <div class="control">
+            <div class="control-header">
+              <strong>Bestandsreichweite</strong>
+              <span class="value" id="inventoryValue">20 Tage</span>
+            </div>
+
+            <input
+              id="inventory"
+              type="range"
+              min="10"
+              max="32"
+              value="20"
+              step="1"
+            >
+          </div>
+
+
+          <div class="control">
+            <div class="control-header">
+              <strong>Prozessverbesserung</strong>
+              <span class="value" id="improvementValue">5 %</span>
+            </div>
+
+            <input
+              id="improvement"
+              type="range"
+              min="0"
+              max="20"
+              value="5"
+              step="1"
+            >
+          </div>
+
+
+          <div class="control">
+            <div class="control-header">
+              <strong>Retourenquote</strong>
+              <span class="value" id="returnsValue">8 %</span>
+            </div>
+
+            <input
+              id="returns"
+              type="range"
+              min="3"
+              max="15"
+              value="8"
+              step=".5"
+            >
+          </div>
+
+
+          <div class="strategies">
+
+            <h4>Strategie wählen</h4>
+
+            <div class="strategy-grid">
+
+              <button class="strategy" onclick="strategyCost()">
+                Cost Focus
+              </button>
+
+              <button class="strategy" onclick="strategyService()">
+                Service Focus
+              </button>
+
+              <button class="strategy" onclick="strategySustainability()">
+                Sustainability
+              </button>
+
+              <button class="strategy" onclick="strategyBalance()">
+                Best Balance
+              </button>
+
+            </div>
+
+            <button class="btn reset-btn" onclick="resetScenario()">
+              Baseline zurücksetzen
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- RIGHT SIDE -->
+
+        <div class="results">
+
+          <div class="scenario-title">
+            <h4>Management Dashboard</h4>
+            <span id="scenarioLabel">Baseline Scenario</span>
+          </div>
+
+
+          <div class="kpi-grid">
+
+            <div class="kpi">
+              <div class="kpi-name">Cost per Order</div>
+              <div class="kpi-number" id="costKPI">4,80 €</div>
+              <div class="kpi-change" id="costChange">Baseline</div>
+
+              <div class="bar-wrap">
+                <div class="bar" id="costBar"></div>
+              </div>
+            </div>
+
+
+            <div class="kpi">
+              <div class="kpi-name">Service-Level</div>
+              <div class="kpi-number" id="serviceKPI">97,5 %</div>
+              <div class="kpi-change" id="serviceChange">Baseline</div>
+
+              <div class="bar-wrap">
+                <div class="bar" id="serviceBar"></div>
+              </div>
+            </div>
+
+
+            <div class="kpi">
+              <div class="kpi-name">Lead Time</div>
+              <div class="kpi-number" id="leadKPI">28 h</div>
+              <div class="kpi-change" id="leadChange">Baseline</div>
+
+              <div class="bar-wrap">
+                <div class="bar" id="leadBar"></div>
+              </div>
+            </div>
+
+
+            <div class="kpi">
+              <div class="kpi-name">Capacity Utilization</div>
+              <div class="kpi-number" id="utilKPI">82 %</div>
+              <div class="kpi-change" id="utilChange">Baseline</div>
+
+              <div class="bar-wrap">
+                <div class="bar" id="utilBar"></div>
+              </div>
+            </div>
+
+
+            <div class="kpi">
+              <div class="kpi-name">Energy per Order</div>
+              <div class="kpi-number" id="energyKPI">0,82 kWh</div>
+              <div class="kpi-change" id="energyChange">Baseline</div>
+
+              <div class="bar-wrap">
+                <div class="bar" id="energyBar"></div>
+              </div>
+            </div>
+
+
+            <div class="kpi">
+              <div class="kpi-name">Inventory Index</div>
+              <div class="kpi-number" id="stockKPI">100</div>
+              <div class="kpi-change" id="stockChange">Baseline</div>
+
+              <div class="bar-wrap">
+                <div class="bar" id="stockBar"></div>
+              </div>
+            </div>
+
+          </div>
+
+
+          <div class="decision-box">
+
+            <div class="decision-head">
+              <span>Management Decision</span>
+              <span class="decision" id="decision">
+                ADAPT
+              </span>
+            </div>
+
+            <div class="decision-content">
+
+              <p id="decisionText">
+                Passe die Parameter an, um eine belastbare Entscheidung zu treffen.
+              </p>
+
+              <ul class="decision-reasons" id="decisionReasons">
+                <li>Kostenwirkung prüfen</li>
+                <li>Service-Level absichern</li>
+                <li>Ressourcenwirkung bewerten</li>
+              </ul>
+
+            </div>
+
+          </div>
+
+
+          <div class="disclaimer">
+            Alle Werte und Berechnungen sind rein illustrativ und basieren
+            nicht auf internen Daten von Tchibo oder anderen Unternehmen.
+            Der Case dient ausschließlich dazu, meine analytische
+            und strukturierte Arbeitsweise zu demonstrieren.
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<section id="thinking">
+  <div class="container">
+
+    <div class="section-label">How I Think</div>
+
+    <h2>
+      Von Daten zur Umsetzung.
+    </h2>
+
+    <p class="section-intro">
+      Der Simulator folgt der gleichen Logik, die ich auch in realen
+      Supply-Chain-Projekten anwenden würde.
+    </p>
+
+
+    <div class="thinking-grid">
+
+      <div class="thinking-card">
+        <div class="thinking-no">01</div>
+        <h3>Transparenz schaffen</h3>
+        <p>
+          KPIs definieren, Datenqualität prüfen und den Ausgangszustand verstehen.
+        </p>
+      </div>
+
+      <div class="thinking-card">
+        <div class="thinking-no">02</div>
+        <h3>Treiber verstehen</h3>
+        <p>
+          Nicht nur Symptome betrachten, sondern Kosten- und Prozessursachen identifizieren.
+        </p>
+      </div>
+
+      <div class="thinking-card">
+        <div class="thinking-no">03</div>
+        <h3>Trade-offs testen</h3>
+        <p>
+          Maßnahmen nicht isoliert bewerten, sondern ihre Wirkung auf Kosten,
+          Service und Ressourcen berücksichtigen.
+        </p>
+      </div>
+
+      <div class="thinking-card">
+        <div class="thinking-no">04</div>
+        <h3>Entscheiden</h3>
+        <p>
+          Aus Analyse eine klare Empfehlung ableiten: GO, ADAPT oder STOP.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<section class="cta">
+
+  <div class="container">
+
+    <div class="section-label" style="color:#9fc2df;">
+      Jan Kraege
+    </div>
+
+    <h2>
+      Analyse verstehen.<br>
+      Prozesse verbessern.<br>
+      Verantwortung übernehmen.
+    </h2>
+
+    <p>
+      Mein Ziel ist es, Supply Chain nicht nur analytisch zu betrachten,
+      sondern gemeinsam mit operativen Teams aus Daten konkrete Verbesserungen zu entwickeln.
+    </p>
+
+  </div>
+
+</section>
+
+
+<footer>
+  Application Project by Jan Kraege · 2026 · Illustrative Supply Chain Case
+</footer>
+
+
+<script>
+
+  const inputs = {
+    demand: document.getElementById("demand"),
+    capacity: document.getElementById("capacity"),
+    transport: document.getElementById("transport"),
+    inventory: document.getElementById("inventory"),
+    improvement: document.getElementById("improvement"),
+    returns: document.getElementById("returns")
+  };
+
+
+  const baseline = {
+    cost: 4.80,
+    service: 97.5,
+    lead: 28,
+    utilization: 82,
+    energy: 0.82,
+    stock: 100
+  };
+
+
+  function formatDE(number, digits = 1) {
+    return number.toLocaleString("de-DE", {
+      minimumFractionDigits: digits,
+      maximumFractionDigits: digits
+    });
+  }
+
+
+  function calculate() {
+
+    const demand = +inputs.demand.value;
+    const capacity = +inputs.capacity.value;
+    const transport = +inputs.transport.value;
+    const inventory = +inputs.inventory.value;
+    const improvement = +inputs.improvement.value;
+    const returns = +inputs.returns.value;
+
+
+    /* DISPLAY SLIDER VALUES */
+
+    document.getElementById("demandValue").textContent =
+      demand + " %";
+
+    document.getElementById("capacityValue").textContent =
+      capacity + " %";
+
+    document.getElementById("transportValue").textContent =
+      transport + " %";
+
+    document.getElementById("inventoryValue").textContent =
+      inventory + " Tage";
+
+    document.getElementById("improvementValue").textContent =
+      improvement + " %";
+
+    document.getElementById("returnsValue").textContent =
+      formatDE(returns, 1) + " %";
+
+
+    /* KPI CALCULATIONS */
+
+    const demandPressure = demand / 100;
+    const capacityFactor = capacity / 100;
+
+    let utilization =
+      82 *
+      demandPressure /
+      capacityFactor;
+
+    utilization = Math.max(60, Math.min(105, utilization));
+
+
+    let cost =
+      4.80
+      * (1 - improvement * 0.012)
+      * (1 - (transport - 82) * 0.006)
+      * (1 + (returns - 8) * 0.009)
+      * (1 + Math.max(0, utilization - 92) * 0.007);
+
+
+    let service =
+      97.5
+      + (capacity - 100) * 0.06
+      + (inventory - 20) * 0.08
+      - Math.max(0, demand - 100) * 0.07
+      - Math.max(0, utilization - 92) * 0.08;
+
+
+    service = Math.max(88, Math.min(99.7, service));
+
+
+    let lead =
+      28
+      - (capacity - 100) * 0.25
+      - improvement * 0.18
+      + Math.max(0, utilization - 88) * 0.35
+      + (returns - 8) * 0.15;
+
+
+    lead = Math.max(14, Math.min(48, lead));
+
+
+    let energy =
+      0.82
+      * (1 - improvement * 0.009)
+      * (1 - (transport - 82) * 0.004)
+      * (1 + (returns - 8) * 0.006);
+
+
+    let stock =
+      100 * inventory / 20;
+
+
+    updateKPI(
+      "costKPI",
+      "costChange",
+      "costBar",
+      cost,
+      baseline.cost,
+      "€",
+      false
+    );
+
+
+    updateKPI(
+      "serviceKPI",
+      "serviceChange",
+      "serviceBar",
+      service,
+      baseline.service,
+      "%",
+      true
+    );
+
+
+    updateKPI(
+      "leadKPI",
+      "leadChange",
+      "leadBar",
+      lead,
+      baseline.lead,
+      "h",
+      false
+    );
+
+
+    updateKPI(
+      "utilKPI",
+      "utilChange",
+      "utilBar",
+      utilization,
+      baseline.utilization,
+      "%",
+      null
+    );
+
+
+    updateKPI(
+      "energyKPI",
+      "energyChange",
+      "energyBar",
+      energy,
+      baseline.energy,
+      "kWh",
+      false
+    );
+
+
+    updateKPI(
+      "stockKPI",
+      "stockChange",
+      "stockBar",
+      stock,
+      baseline.stock,
+      "",
+      null
+    );
+
+
+    managementDecision(
+      cost,
+      service,
+      lead,
+      utilization,
+      energy
+    );
+  }
+
+
+  function updateKPI(
+    numberID,
+    changeID,
+    barID,
+    value,
+    base,
+    unit,
+    higherIsBetter
+  ) {
+
+    const number = document.getElementById(numberID);
+    const change = document.getElementById(changeID);
+    const bar = document.getElementById(barID);
+
+    let digits = unit === "€" || unit === "kWh" ? 2 : 1;
+
+    number.textContent =
+      formatDE(value, digits) +
+      (unit ? " " + unit : "");
+
+    const diff =
+      ((value - base) / base) * 100;
+
+    const sign =
+      diff > 0 ? "+" : "";
+
+    change.textContent =
+      Math.abs(diff) < 0.05
+        ? "Baseline"
+        : sign + formatDE(diff, 1) + " % vs. Baseline";
+
+
+    change.className = "kpi-change";
+
+    if (higherIsBetter === true) {
+
+      change.classList.add(
+        diff >= 0 ? "good" : "bad"
+      );
+
+    }
+
+    else if (higherIsBetter === false) {
+
+      change.classList.add(
+        diff <= 0 ? "good" : "bad"
+      );
+
+    }
+
+    else {
+
+      change.classList.add("neutral");
+
+    }
+
+
+    const barWidth =
+      Math.max(
+        15,
+        Math.min(
+          100,
+          50 + diff * 2
+        )
+      );
+
+    bar.style.width =
+      barWidth + "%";
+  }
+
+
+  function managementDecision(
+    cost,
+    service,
+    lead,
+    utilization,
+    energy
+  ) {
+
+    const costSaving =
+      ((baseline.cost - cost) /
+      baseline.cost) * 100;
+
+    const energySaving =
+      ((baseline.energy - energy) /
+      baseline.energy) * 100;
+
+
+    const decision =
+      document.getElementById("decision");
+
+    const text =
+      document.getElementById("decisionText");
+
+    const reasons =
+      document.getElementById("decisionReasons");
+
+
+    let result = "ADAPT";
+    let color = "#d8a928";
+
+
+    if (
+      service >= 97.5 &&
+      costSaving >= 3 &&
+      energySaving >= 3 &&
+      lead <= 30 &&
+      utilization <= 95
+    ) {
+
+      result = "GO";
+      color = "#2d7a5c";
+
+      text.textContent =
+        "Die Kombination zeigt eine belastbare Verbesserung bei stabiler Versorgungsqualität.";
+
+      reasons.innerHTML = `
+        <li>Kostenwirkung positiv</li>
+        <li>Service-Level mindestens stabil</li>
+        <li>Ressourcenverbrauch verbessert</li>
+      `;
+
+    }
+
+    else if (
+      service < 95 ||
+      lead > 38 ||
+      utilization > 100
+    ) {
+
+      result = "STOP";
+      color = "#b94c4c";
+
+      text.textContent =
+        "Die operative Belastung oder Serviceverschlechterung ist für einen Rollout zu hoch.";
+
+      reasons.innerHTML = `
+        <li>Versorgungsqualität gefährdet</li>
+        <li>Operatives Risiko zu hoch</li>
+        <li>Maßnahme grundsätzlich neu bewerten</li>
+      `;
+
+    }
+
+    else {
+
+      result = "ADAPT";
+      color = "#d8a928";
+
+      text.textContent =
+        "Potenzial ist vorhanden, aber mindestens ein Zielkriterium wird noch nicht ausreichend erfüllt.";
+
+      reasons.innerHTML = `
+        <li>Zielkonflikt analysieren</li>
+        <li>Parameter bzw. Maßnahme anpassen</li>
+        <li>Erneut testen und Wirkung messen</li>
+      `;
+
+    }
+
+
+    decision.textContent =
+      result;
+
+    decision.style.color =
+      color;
+
+  }
+
+
+  function setValues(values, label) {
+
+    Object.entries(values).forEach(
+      ([key, value]) => {
+        inputs[key].value = value;
+      }
+    );
+
+    document.getElementById(
+      "scenarioLabel"
+    ).textContent = label;
+
+    calculate();
+  }
+
+
+  function strategyCost() {
+
+    setValues(
+      {
+        demand: 108,
+        capacity: 99,
+        transport: 94,
+        inventory: 15,
+        improvement: 15,
+        returns: 7
+      },
+      "Cost Focus"
+    );
+
+  }
+
+
+  function strategyService() {
+
+    setValues(
+      {
+        demand: 108,
+        capacity: 118,
+        transport: 80,
+        inventory: 27,
+        improvement: 8,
+        returns: 6
+      },
+      "Service Focus"
+    );
+
+  }
+
+
+  function strategySustainability() {
+
+    setValues(
+      {
+        demand: 105,
+        capacity: 105,
+        transport: 95,
+        inventory: 18,
+        improvement: 16,
+        returns: 5
+      },
+      "Sustainability Focus"
+    );
+
+  }
+
+
+  function strategyBalance() {
+
+    setValues(
+      {
+        demand: 108,
+        capacity: 112,
+        transport: 90,
+        inventory: 21,
+        improvement: 14,
+        returns: 6
+      },
+      "Best Balance"
+    );
+
+  }
+
+
+  function resetScenario() {
+
+    setValues(
+      {
+        demand: 100,
+        capacity: 100,
+        transport: 82,
+        inventory: 20,
+        improvement: 5,
+        returns: 8
+      },
+      "Baseline Scenario"
+    );
+
+  }
+
+
+  Object.values(inputs).forEach(
+    input =>
+      input.addEventListener(
+        "input",
+        calculate
+      )
+  );
+
+
+  calculate();
+
+</script>
+
+</body>
+</html>
